@@ -1,54 +1,83 @@
-# Remotion video
+# 🏍️ BikeMe — Promo Trailer
 
-<p align="center">
-  <a href="https://github.com/remotion-dev/logo">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/remotion-dev/logo/raw/main/animated-logo-banner-dark.apng">
-      <img alt="Animated Remotion Logo" src="https://github.com/remotion-dev/logo/raw/main/animated-logo-banner-light.gif">
-    </picture>
-  </a>
-</p>
+> Премиальный промо-трейлер в стиле **Apple Keynote**, собранный целиком кодом.
+> React + TypeScript → покадровый рендер → MP4. Без таймлайн-редакторов.
 
-Welcome to your Remotion project!
+![Remotion](https://img.shields.io/badge/Remotion-4.0-blue?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![Format](https://img.shields.io/badge/1080%C3%971920-30fps-orange)
+![Duration](https://img.shields.io/badge/duration-30.4s-lightgrey)
 
-## Commands
+**BikeMe** — Telegram-бот, который по 3 фото пользователя генерирует фотореалистичный кадр: человек на выбранном мотоцикле в выбранной экипировке. Трейлер показывает весь путь — от загрузки фото до результата — и закрывается оффером для мотомагазинов (white-label примерочная под их бренд).
 
-**Install Dependencies**
+---
 
-```console
-npm i
+## 🎬 Сюжет (30.4 сек)
+
+| # | Сцена | Что происходит |
+|---|-------|----------------|
+| 1 | **Intro** | TG-строка ввода → клик по скрепке → фото загружено |
+| 2 | **BikePick** | CS-кейс-рулетки: бренды → BMW, силуэты → S1000RR |
+| 3 | **Select** | Сбор сетапа: куртка ✓, шлем ✓ |
+| 4 | **ColorScroll** | 3D-изометрический скролл расцветок AGV K1-S + клик |
+| 5 | **Result** | Карточка-результат: «Примерь на себя.» |
+| 6 | **ResultsFan** | Стена из 17 AI-генераций → морф в карточку |
+| 7 | **Deck** | Cover-flow: «Любой байк. Любой стиль.» |
+| 8 | **Device** | Отъезд камеры в iPhone — «Примерочная — прямо в Telegram.» |
+| 9 | **Outro** | Лого → ребрендинг «BikeMeBot → Ваш магазин» → цены и контакт |
+
+## 🚀 Быстрый старт
+
+```bash
+npm install
+npm run dev          # Remotion Studio — превью со скрабингом
 ```
 
-**Start Preview**
+**Рендер:**
 
-```console
-npm run dev
+```bash
+# стилл для проверки кадра
+npx remotion still Trailer out/test.png --frame=N
+
+# финальный MP4 (макс. качество, совместим со всеми плеерами)
+npx remotion render Trailer out/trailer.mp4 \
+  --codec=h264 --crf=16 --image-format=png \
+  --pixel-format=yuv420p --color-space=bt709
 ```
 
-**Render video**
+## 🗂 Структура
 
-```console
-npx remotion render
+```
+src/
+├── Root.tsx              # композиция Trailer (913 кадров, 1080×1920, 30fps)
+├── Trailer.tsx           # TransitionSeries: сцены + переходы
+├── scenes/               # 9 сцен (Scene1Intro … Scene6Outro)
+├── transitions/
+│   └── zoomThrough.tsx   # фирменный переход: наплыв из глубины + blur
+└── components/
+    └── MacCursor.tsx     # курсор macOS (inline SVG)
+
+public/                   # все ассеты: генерации, силуэты, расцветки, девайс
 ```
 
-**Upgrade Remotion**
+## 🎨 Дизайн-система («эппловость»)
 
-```console
-npx remotion upgrade
-```
+- Фон почти-чёрный `#0F1923`, много воздуха
+- Один акцентный цвет — оранжевый `#E8660A`, точечно
+- Шрифт **Inter** (300 / 600-700), крупно, минимум слов
+- Изинги только `Easing.out` / `Easing.inOut` / `spring` — никогда linear
+- Глубина: параллакс, мягкие тени, блюр на переходах
+- Медленный уверенный темп
 
-## Docs
+## ⚙️ Технические заметки
 
-Get started with Remotion by reading the [fundamentals page](https://www.remotion.dev/docs/the-fundamentals).
+- Переходы «съедают» кадры: `durationInFrames = Σ сцен − Σ переходов`. При изменении длительностей — пересчитать в `Root.tsx`.
+- Сцены связаны геометрией: морф-карта `SceneResultsFan` пиксель-в-пиксель садится в карточку `Scene4Deck` (`TGT_* ↔ CARD_W/H`).
+- `filter` на элементе с `overflow:hidden + border-radius` мылит картинку — соседние карточки Deck димятся оверлеем.
+- Отсутствующий ассет (404) роняет весь рендер — имена файлов сверять с `public/`.
 
-## Help
+Подробная документация для разработки — в [CLAUDE.md](CLAUDE.md).
 
-We provide help on our [Discord server](https://discord.gg/6VzzNDwUwV).
+---
 
-## Issues
-
-Found an issue with Remotion? [File an issue here](https://github.com/remotion-dev/remotion/issues/new).
-
-## License
-
-Note that for some entities a company license is needed. [Read the terms here](https://github.com/remotion-dev/remotion/blob/main/LICENSE.md).
+**Контакт:** Андрей Ефимов · [@efimov_and](https://t.me/efimov_and)
