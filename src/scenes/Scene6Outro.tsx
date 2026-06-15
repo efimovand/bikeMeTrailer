@@ -248,7 +248,7 @@ export const Scene6Outro: React.FC = () => {
                     whiteSpace: "nowrap",
                     marginBottom: 80
                 }}>
-                    SaaS <span style={{ color: ORANGE }}>от 399 USD</span>
+                    SaaS <span style={{ color: ORANGE }}>помесячно</span>
                 </div>
 
                 {/* строка 2 — справа */}
@@ -264,7 +264,7 @@ export const Scene6Outro: React.FC = () => {
                     whiteSpace: "nowrap",
                     marginBottom: 60
                 }}>
-                    Buy-out <span style={{ color: ORANGE }}>12.000 USD</span>
+                    Buy-out <span style={{ color: ORANGE }}>под ключ</span>
                 </div>
 
                 {/* контакт */}
